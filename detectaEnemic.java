@@ -4,15 +4,20 @@
  */
 package robottimid;
 
+import robocode.AdvancedRobot;
+import robocode.ScannedRobotEvent;
+import robocode.util.Utils;
+
 /**
  *
  * @author cris
  */
-public class detectaEnemic implements State {
+public class detectaEnemic implements State{
 
     @Override
     public void doAction() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        
     }
+        
     
 }
