@@ -25,7 +25,7 @@ public class anarCantonada implements State {
         double radarHeading = robot.getRadarHeadingRadians();
         
         double angleToTurn = Utils.normalRelativeAngle(bearingAngle - myHeading);
-        double angleToRadar = Utils.normalAbsoluteAngle(bearingAngle - radarHeading);
+        double angleToRadar = Utils.normalRelativeAngle(myHeading - radarHeading);
         
         // Turn the robot to face the farthest corner and move towards it
         robot.stop();
