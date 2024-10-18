@@ -3,7 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/H:/Dropbox/Uni/I50/PROP/Lab/TimidinRobot/src/timidinrobot/TimidinRobot.java</file>
+            <file>file:/H:/Users/xavit/Documents/GitHub/robocode/TimidinRobot/src/timidinrobot/TimidinRobot.java</file>
+            <file>file:/H:/Users/xavit/Documents/GitHub/robocode/TimidinRobot/src/timidinrobot/anarCantonada.java</file>
+            <file>file:/H:/Users/xavit/Documents/GitHub/robocode/TimidinRobot/src/timidinrobot/disparaEnemic.java</file>
+            <file>file:/H:/Users/xavit/Documents/GitHub/robocode/TimidinRobot/src/timidinrobot/detectaEnemic.java</file>
+            <file>file:/H:/Users/xavit/Documents/GitHub/robocode/TimidinRobot/src/timidinrobot/robotContext.java</file>
         </group>
     </open-files>
 </project-private>
