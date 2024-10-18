@@ -59,11 +59,10 @@ public class detectaEnemic implements State {
         
         // Calculate bearing to the farthest corner
         double bearingToCorner = Math.atan2(cornersX[farthestCorner] - myX, cornersY[farthestCorner] - myY);
-        double angleToTurn = Utils.normalRelativeAngle(bearingToCorner - myHeading);
         
         double distanceToCorner = Math.hypot(cornersX[farthestCorner] - myX, cornersY[farthestCorner] - myY);
         
-        context.setState(new anarCantonada(angleToTurn, distanceToCorner));
+        context.setState(new anarCantonada(bearingToCorner, distanceToCorner));
         
     }
     
