@@ -2,13 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
  */
-package robottimid;
+package timidinrobot;
+import robocode.ScannedRobotEvent;
 
-/**
- *
- * @author cris
- */
+
 public interface State {
 
-    public void doAction();
+    public void doAction(robotContext context);
+    void onScannedRobot(robotContext context, ScannedRobotEvent e);
 }
