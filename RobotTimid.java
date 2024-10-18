@@ -1,32 +1,24 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package robottimid;
-import robocode.AdvancedRobot;
+package timidinrobot;
 
-/**
- *
- * @author cris
- */
-public class RobotTimid extends AdvancedRobot{
+import robocode.ScannedRobotEvent;
 
-    private String state="";
-    public void mover(){
-        
+public class detectaEnemic implements State {
+
+    @Override
+    public void doAction(robotContext context) {
+        TimidinRobot robot = context.getRobot();
+        robot.setTurnRadarLeft(90);
+        robot.execute();
+    }
+
+    @Override
+    public void onScannedRobot(robotContext context, ScannedRobotEvent e) {
+        context.setState(new anarCantonada(e));
     }
     
-    public void setState(String state){
-        this.state = state;
-    }
-    public void doAction(){
-        if(state.equalsIgnoreCase("detectaEnemic")){
-            
-        }else if(state.equalsIgnoreCase("anarCantonada")){
-        
-        }else if(state.equalsIgnoreCase("disparaEnemic")){
-        
-        }
-    }
 }
 
