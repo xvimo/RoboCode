@@ -8,57 +8,23 @@ import robocode.ScannedRobotEvent;
 import robocode.util.Utils;
 
 public class anarCantonada implements State {
-    private ScannedRobotEvent scannedRobotEvent;
+    private double angleToTurn;
+    private double distanceToCorner;
 
-    public anarCantonada(ScannedRobotEvent e) {
-        this.scannedRobotEvent = e;
+    public anarCantonada(double angle, double distance) {
+        this.angleToTurn = angle;
+        this.distanceToCorner = distance;
     }
 
 
     @Override
     public void doAction(robotContext context) {
         TimidinRobot robot = context.getRobot();
-        double enemyBearing = scannedRobotEvent.getBearing();
-        double distance = scannedRobotEvent.getDistance();
         
-        double myX = robot.getX(), myY = robot.getY();
-        double myHeading = robot.getHeadingRadians();
-
-        // Calculate the absolute bearing (convert to radians for trig functions)
-        double absoluteBearing = myHeading + Math.toRadians(enemyBearing);
-
-        // Calculate the enemy's position using trigonometry
-        double enemyX = myX + distance * Math.sin(absoluteBearing);
-        double enemyY = myY + distance * Math.cos(absoluteBearing);
-        
-        double height = robot.getBattleFieldHeight() - 10, width = robot.getBattleFieldWidth() - 10;
-        
-        double[] cornersX = {0, width, 0, height}, cornersY = {0, 0, height, width};
-        
-        double farthestDistance = -1;
-        int farthestCorner = -1;
-        
-        // Find the farthest corner from the enemy
-        for (int i = 0; i < 4; i++) {
-            double cornerX = cornersX[i];
-            double cornerY = cornersY[i];
-            
-            double dist = Math.sqrt(Math.pow(cornerX - enemyX, 2) + Math.pow(cornerY - enemyY, 2));
-            
-            if (dist > farthestDistance) {
-                farthestDistance = dist;
-                farthestCorner = i;
-            }
-        }
-        
-        // Calculate bearing to the farthest corner
-        double bearingToCorner = Math.atan2(cornersX[farthestCorner] - myX, cornersY[farthestCorner] - myY);
-        double angleToTurn = Utils.normalRelativeAngle(bearingToCorner - myHeading);
         
         // Turn the robot to face the farthest corner and move towards it
         robot.setTurnRightRadians(angleToTurn);
         robot.execute();
-        double distanceToCorner = Math.hypot(cornersX[farthestCorner] - myX, cornersY[farthestCorner] - myY);
         robot.setAhead(distanceToCorner);
         robot.execute();
         
