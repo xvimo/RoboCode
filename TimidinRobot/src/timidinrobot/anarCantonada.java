@@ -25,7 +25,9 @@ public class anarCantonada implements State {
         // Turn the robot to face the farthest corner and move towards it
         robot.stop();
         robot.setTurnRightRadians(angleToTurn);
+        robot.setTurnRadarRightRadians(angleToTurn);
         robot.setAhead(distanceToCorner);
+        robot.resume();
         
         // After moving, transition back to scanning state
         context.setState(new disparaEnemic());
