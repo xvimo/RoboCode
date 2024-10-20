@@ -113,7 +113,6 @@ public class anarCantonada implements State {
     
     public void onHitRobot(robotContext context, HitRobotEvent e) {
         TimidinRobot robot = context.getRobot();
-        robot.stop();
 
         // Retroceder para evitar quedarnos pegados
         robot.setBack(100);
@@ -137,8 +136,8 @@ public class anarCantonada implements State {
    
     public void onHitWall(robotContext context, HitWallEvent e) {
         TimidinRobot robot = context.getRobot();
-        robot.stop();
-
+        if(e.getBearing() > -90 && e.getBearing() < 90){
+        
         // Retroceder para evitar quedarnos atascados en la pared
         robot.setBack(100);
         robot.execute();
@@ -153,5 +152,8 @@ public class anarCantonada implements State {
         robot.setAhead(100);
         robot.execute();
         robot.waitFor(new MoveCompleteCondition(robot));
+        }else{
+            robot.ahead(100);
+        }
     }
 }

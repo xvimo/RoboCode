@@ -39,7 +39,7 @@ public class detectaEnemic implements State {
         
         double height = robot.getBattleFieldHeight() - 10, width = robot.getBattleFieldWidth() - 10;
         
-        double[] cornersX = {0, width, 0, height}, cornersY = {0, 0, height, width};
+        double[] cornersX = {0, width, 0, width}, cornersY = {0, height, 0, height};
         
         double farthestDistance = -1;
         int farthestCorner = -1;
@@ -58,9 +58,6 @@ public class detectaEnemic implements State {
         }
         
         // Calculate bearing to the farthest corner
-        //double bearingToCorner = Math.atan2(cornersX[farthestCorner] - myX, cornersY[farthestCorner] - myY);
-        
-        //double distanceToCorner = Math.hypot(cornersX[farthestCorner] - myX, cornersY[farthestCorner] - myY);
         
         context.setState(new anarCantonada(cornersX[farthestCorner], cornersY[farthestCorner]));
         
