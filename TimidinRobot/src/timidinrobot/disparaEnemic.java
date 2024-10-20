@@ -5,6 +5,7 @@
 package timidinrobot;
 
 import robocode.ScannedRobotEvent;
+import robocode.util.Utils;
 
 /**
  *
@@ -14,14 +15,20 @@ public class disparaEnemic implements State{
 
     @Override
     public void doAction(robotContext context) {
-        //TimidinRobot robot = context.getRobot();
-        
+        TimidinRobot robot = context.getRobot();
+        while(true){
+            robot.turnGunRight(10);
+        }
         
     }
 
     @Override
     public void onScannedRobot(robotContext context, ScannedRobotEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        TimidinRobot robot = context.getRobot();
+        double absoluteBearing = robot.getHeading() + e.getBearing();
+        double bearingFromGun = Utils.normalRelativeAngleDegrees(absoluteBearing - robot.getGunHeading());    
+        double enemyDistance = e.getDistance();
+        robot.turnGunRight(bearingFromGun);
+        robot.setFire(Math.min(400/enemyDistance, 6));
     }
-    
 }

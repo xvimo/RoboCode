@@ -9,6 +9,7 @@ import robocode.TurnCompleteCondition;
 import robocode.util.Utils;
 import robocode.HitWallEvent;
 import robocode.HitRobotEvent;
+import robocode.MoveCompleteCondition;
 
 public class anarCantonada implements State {
     private final double cX; // Coordenada X de la esquina
@@ -51,6 +52,28 @@ public class anarCantonada implements State {
         // El radar debe seguir buscando mientras el robot se mueve
         robot.setTurnRadarRightRadians(Utils.normalRelativeAngle(bearingAngle - radarHeading));
         robot.execute();
+        while (robot.getDistanceRemaining() > 0) {
+            robotX = robot.getX();
+            robotY = robot.getY();
+            bearingAngle = Math.atan2(cX - robotX, cY - robotY);
+            distanceToCorner = Math.hypot(cX - robotX, cY - robotY);
+
+            myHeading = robot.getHeadingRadians();
+            angleToTurn = Utils.normalRelativeAngle(bearingAngle - myHeading);
+
+            // Turn the robot to face the farthest corner and move towards it
+            robot.setTurnRightRadians(angleToTurn);
+            robot.execute();  // Start turning
+            // Wait for the robot to complete its turn
+            robot.waitFor(new TurnCompleteCondition(robot));
+
+            // Turn the radar and execute it, then wait for it to complete
+            // Move ahead by the specified distance, then wait for it to complete
+            robot.setAhead(distanceToCorner);
+            robot.execute();  // Start moving forward
+            //robot.waitFor(new MoveCompleteCondition(robot));
+        }
+        context.setState(new disparaEnemic());
     }
 
     @Override
@@ -107,6 +130,7 @@ public class anarCantonada implements State {
         robot.execute();
         robot.waitFor(new TurnCompleteCondition(robot));
         
+        
     }
 
     // Manejo de colisión con la pared
@@ -118,7 +142,7 @@ public class anarCantonada implements State {
         // Retroceder para evitar quedarnos atascados en la pared
         robot.setBack(100);
         robot.execute();
-        robot.waitFor(new TurnCompleteCondition(robot));
+        robot.waitFor(new MoveCompleteCondition(robot));
 
         // Recalcular dirección a la esquina objetivo
         double bearingAngle = Math.atan2(cX - robot.getX(), cY - robot.getY());
@@ -128,6 +152,6 @@ public class anarCantonada implements State {
         robot.waitFor(new TurnCompleteCondition(robot));
         robot.setAhead(100);
         robot.execute();
-        robot.waitFor(new TurnCompleteCondition(robot));
+        robot.waitFor(new MoveCompleteCondition(robot));
     }
 }
