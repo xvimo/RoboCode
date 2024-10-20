@@ -5,44 +5,129 @@
 package timidinrobot;
 
 import robocode.ScannedRobotEvent;
+import robocode.TurnCompleteCondition;
 import robocode.util.Utils;
+import robocode.HitWallEvent;
+import robocode.HitRobotEvent;
 
 public class anarCantonada implements State {
-    private double bearingAngle;
-    private double distanceToCorner;
+    private final double cX; // Coordenada X de la esquina
+    private final double cY; // Coordenada Y de la esquina
+    private final double adjustmentAngle = Math.PI / 6;  // Ajuste del ángulo para esquivar obstáculos (15 grados)
 
-    public anarCantonada(double angle, double distance) {
-        this.bearingAngle = angle;
-        this.distanceToCorner = distance;
+    public anarCantonada(double cornerX, double cornerY) {
+        this.cX = cornerX;
+        this.cY = cornerY;
     }
-
 
     @Override
     public void doAction(robotContext context) {
         TimidinRobot robot = context.getRobot();
-        
+
+        // Obtener la posición actual del robot
+        double robotX = robot.getX();
+        double robotY = robot.getY();
+
+        // Calcular el ángulo hacia la esquina
+        double bearingAngle = Math.atan2(cX - robotX, cY - robotY);
+        double distanceToCorner = Math.hypot(cX-robotX, cY - robotY);
+
+        // Obtener el encabezado actual del robot
         double myHeading = robot.getHeadingRadians();
         double radarHeading = robot.getRadarHeadingRadians();
-        
+
+        // Calcular el ángulo de giro necesario para apuntar a la esquina
         double angleToTurn = Utils.normalRelativeAngle(bearingAngle - myHeading);
-        double angleToRadar = Utils.normalRelativeAngle(myHeading - radarHeading);
-        
-        // Turn the robot to face the farthest corner and move towards it
-        robot.stop();
-        robot.setTurnRightRadians(angleToTurn);        
-        robot.setTurnRadarRightRadians(angleToRadar);
-        
+
+        // Girar el robot hacia la esquina y moverse en línea recta hacia ella
+        robot.setTurnRightRadians(angleToTurn);
+        robot.execute();
+        robot.waitFor(new TurnCompleteCondition(robot));
+
+        // Mover hacia la esquina en línea recta
         robot.setAhead(distanceToCorner);
         robot.execute();
-        
-        // After moving, transition back to scanning state
-        context.setState(new disparaEnemic());
+
+        // El radar debe seguir buscando mientras el robot se mueve
+        robot.setTurnRadarRightRadians(Utils.normalRelativeAngle(bearingAngle - radarHeading));
+        robot.execute();
     }
 
     @Override
     public void onScannedRobot(robotContext context, ScannedRobotEvent e) {
-        // Ignore scanning events in the moving state
+        TimidinRobot robot = context.getRobot();
+
+        // Si detectamos un robot en el camino, ajustamos el ángulo de aproximación para esquivar
+        if (e.getDistance() < 125) {
+            
+            double newAngle;
+
+            // Decidimos si giramos a la derecha o izquierda para esquivar, según la posición del enemigo
+            if (e.getBearing() < 0) {
+                newAngle = adjustmentAngle;  // Ajuste de ángulo hacia la derecha
+            } else {
+                newAngle = -adjustmentAngle;  // Ajuste de ángulo hacia la izquierda
+            }
+
+            // Girar el robot según el ajuste calculado
+            robot.setTurnRightRadians(newAngle);
+            robot.execute();
+            robot.waitFor(new TurnCompleteCondition(robot));
+
+            // Mover el robot en línea recta con el nuevo ángulo
+            if(e.getDistance()< 50 ) robot.setBack(50);
+            robot.setAhead(125);  // Avanzamos una pequeña distancia para evitar el obstáculo
+            robot.execute();
+            robot.waitFor(new TurnCompleteCondition(robot));
+        }
+
+        // Continuamos escaneando con el radar mientras nos movemos
+        robot.setTurnRadarRightRadians(Utils.normalRelativeAngle(robot.getHeadingRadians() - robot.getRadarHeadingRadians()));
+        robot.setFireBullet(1);
+        robot.execute();
+    }
+
+    
+    public void onHitRobot(robotContext context, HitRobotEvent e) {
+        TimidinRobot robot = context.getRobot();
+        robot.stop();
+
+        // Retroceder para evitar quedarnos pegados
+        robot.setBack(100);
+        robot.execute();
+        robot.waitFor(new TurnCompleteCondition(robot));
+
+        // Recalcular dirección a la esquina objetivo
+        double bearingAngle = Math.atan2(cX - robot.getX(), cY - robot.getY());
+        double angleToTurn = Utils.normalRelativeAngle(bearingAngle - robot.getHeadingRadians());
+        robot.setTurnRightRadians(angleToTurn);
+        robot.execute();
+        robot.waitFor(new TurnCompleteCondition(robot));
+        robot.setAhead(100);
+        robot.execute();
+        robot.waitFor(new TurnCompleteCondition(robot));
+        
+    }
+
+    // Manejo de colisión con la pared
+   
+    public void onHitWall(robotContext context, HitWallEvent e) {
+        TimidinRobot robot = context.getRobot();
+        robot.stop();
+
+        // Retroceder para evitar quedarnos atascados en la pared
+        robot.setBack(100);
+        robot.execute();
+        robot.waitFor(new TurnCompleteCondition(robot));
+
+        // Recalcular dirección a la esquina objetivo
+        double bearingAngle = Math.atan2(cX - robot.getX(), cY - robot.getY());
+        double angleToTurn = Utils.normalRelativeAngle(bearingAngle - robot.getHeadingRadians());
+        robot.setTurnRightRadians(angleToTurn);
+        robot.execute();
+        robot.waitFor(new TurnCompleteCondition(robot));
+        robot.setAhead(100);
+        robot.execute();
+        robot.waitFor(new TurnCompleteCondition(robot));
     }
 }
-
-
