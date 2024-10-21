@@ -1,15 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package timidinrobot;
 
 import robocode.ScannedRobotEvent;
 
-/**
- *
- * @author cris
- */
 public class robotContext{
    private State currentState;
    private TimidinRobot robot;
@@ -28,7 +20,7 @@ public class robotContext{
    }
    
     public void onScannedRobot(ScannedRobotEvent e) {
-        currentState.onScannedRobot(this, e);  // Delegate to the current state's scanning logic
+        currentState.onScannedRobot(this, e);  // Passem a la primera fase
     }
 
     public TimidinRobot getRobot() {

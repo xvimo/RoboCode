@@ -1,16 +1,12 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+*
+*  FASE 01
+*
+*/
 package timidinrobot;
 
 import robocode.ScannedRobotEvent;
-import robocode.util.Utils;
 
-/**
- *
- * @author cris
- */
 public class detectaEnemic implements State {
 
     @Override
@@ -30,21 +26,21 @@ public class detectaEnemic implements State {
         double myX = robot.getX(), myY = robot.getY();
         double myHeading = robot.getHeadingRadians();
 
-        // Calculate the absolute bearing (convert to radians for trig functions)
+        // Calculem l'angle absolut sobre l'enemic
         double absoluteBearing = myHeading + Math.toRadians(enemyBearing);
 
-        // Calculate the enemy's position using trigonometry
+        // CCalculem la posicio del enemic mitjançant trigonometria
         double enemyX = myX + distance * Math.sin(absoluteBearing);
         double enemyY = myY + distance * Math.cos(absoluteBearing);
         
-        double height = robot.getBattleFieldHeight() - 10, width = robot.getBattleFieldWidth() - 10;
+        double height = robot.getBattleFieldHeight(), width = robot.getBattleFieldWidth();
         
-        double[] cornersX = {0, width, 0, width}, cornersY = {0, height, 0, height};
+        double[] cornersX = {25, width-25, 25, width-25}, cornersY = {25, 25, height-25, height-25};
         
         double farthestDistance = -1;
         int farthestCorner = -1;
         
-        // Find the farthest corner from the enemy
+        // Trobem la cantonada més llunyana al enemic
         for (int i = 0; i < 4; i++) {
             double cornerX = cornersX[i];
             double cornerY = cornersY[i];
@@ -57,8 +53,7 @@ public class detectaEnemic implements State {
             }
         }
         
-        // Calculate bearing to the farthest corner
-        
+        // Enviem les coordenades de la cantonada més llunyana a la segona fase
         context.setState(new anarCantonada(cornersX[farthestCorner], cornersY[farthestCorner]));
         
     }
