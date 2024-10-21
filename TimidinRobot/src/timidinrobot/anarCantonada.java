@@ -52,6 +52,7 @@ public class anarCantonada implements State {
         // El radar debe seguir buscando mientras el robot se mueve
         robot.setTurnRadarRightRadians(Utils.normalRelativeAngle(bearingAngle - radarHeading));
         robot.execute();
+
         while (robot.getDistanceRemaining() > 0) {
             robotX = robot.getX();
             robotY = robot.getY();
