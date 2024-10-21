@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"timidinrobot","l":"anarCantonada"},{"p":"timidinrobot","l":"detectaEnemic"},{"p":"timidinrobot","l":"disparaEnemic"},{"p":"timidinrobot","l":"robotContext"},{"p":"timidinrobot","l":"State"},{"p":"timidinrobot","l":"TimidinRobot"}];updateSearchResults();
