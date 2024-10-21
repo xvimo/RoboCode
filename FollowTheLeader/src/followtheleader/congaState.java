@@ -1,4 +1,4 @@
-package tecnoBot;
+package followtheleader;
 
 import robocode.DeathEvent;
 import robocode.MessageEvent;
@@ -24,7 +24,7 @@ public class congaState implements State {
     
     @Override
     public void doAction() {
-        tecnoBot robot = context.getRobot();
+        FollowTheLeader robot = context.getRobot();
         if(dead){
             leaderDeath();
             return;
@@ -50,7 +50,7 @@ public class congaState implements State {
     }
     
     public void onScannedRobot(ScannedRobotEvent e) {
-        tecnoBot robot = context.getRobot();
+        FollowTheLeader robot = context.getRobot();
 
         // Si detectamos un robot en el camino, ajustamos el ángulo de aproximación para esquivar
         if (e.getDistance() < 125) {
@@ -81,7 +81,7 @@ public class congaState implements State {
     }
     
     public double[][] calculateCorner(){
-        tecnoBot robot = context.getRobot();
+        FollowTheLeader robot = context.getRobot();
         double myX = robot.getX();
         double myY = robot.getY();
       
@@ -124,7 +124,7 @@ public class congaState implements State {
     }
 
     private void leaderDeath() {
-        tecnoBot robot = context.getRobot();
+        FollowTheLeader robot = context.getRobot();
         String[] teammates = robot.getTeammates();
 
         if (teammates != null && teammates.length > 0) {

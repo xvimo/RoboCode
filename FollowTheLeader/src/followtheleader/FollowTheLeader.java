@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package tecnoBot;
+package followtheleader;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import robocode.MessageEvent;
@@ -12,7 +12,7 @@ import robocode.TeamRobot;
  *
  * @author cris
  */
-public class tecnoBot extends TeamRobot{
+public class FollowTheLeader extends TeamRobot{
     private roboContext context;
     
     @Override

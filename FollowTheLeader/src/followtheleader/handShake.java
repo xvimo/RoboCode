@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package tecnoBot;
+package followtheleader;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.io.IOException;
@@ -23,7 +23,7 @@ public class handShake implements State{
     }
     @Override
     public void doAction() {
-        tecnoBot robot = context.getRobot();
+        FollowTheLeader robot = context.getRobot();
         sentPosition();
         if(teamPositions.size() >= robot.getTeammates().length){
             calculateHierarchy();
@@ -32,7 +32,7 @@ public class handShake implements State{
         context.setState(new congaState(context,teamLeader));
     }
     public void sentPosition(){
-        tecnoBot robot = context.getRobot();
+        FollowTheLeader robot = context.getRobot();
         try {
             robot.broadcastMessage(new double[] {robot.getX(),robot.getY()});
         } catch (IOException ex) {
@@ -40,7 +40,7 @@ public class handShake implements State{
     }
     
     public void onMessageReceived(MessageEvent e){
-        tecnoBot robot = context.getRobot();
+        FollowTheLeader robot = context.getRobot();
         if(e.getMessage() instanceof double[]){
             double[] position = (double []) e.getMessage();
             teamPositions.put(e.getSender(),position);
@@ -52,7 +52,7 @@ public class handShake implements State{
     }
 
     public void calculateHierarchy() {
-        tecnoBot robot = context.getRobot();
+        FollowTheLeader robot = context.getRobot();
         List<String> robots = new ArrayList <>(teamPositions.keySet());
         teamLeader = robots.get((int) ((Math.random() * robots.size())));
         
@@ -72,7 +72,7 @@ public class handShake implements State{
         
     }
     public void onPaint(Graphics2D g){
-        tecnoBot robot = context.getRobot();
+        FollowTheLeader robot = context.getRobot();
         if(teamLeader != null && teamLeader.equals(robot.getName())){
             g.setColor(Color.YELLOW);
             g.drawOval((int)(robot.getX()-50), (int)(robot.getY()-50), 100, 100);
